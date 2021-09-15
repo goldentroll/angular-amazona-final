@@ -50,7 +50,7 @@ const data = {
     },
     {
       name: 'Lacoste Free Shirt',
-      slug: 'nike-slim-shirt',
+      slug: 'lacoste-free-shirt',
       category: 'Shirts',
       image: '/images/p3.jpg',
       price: 220,

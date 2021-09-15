@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.error-snackbar {
+  background: #ff4040;
+  color: #ffffff;
+}
+.success-snackbar {
+  background: #40c040;
+  color: #ffffff;
+}
+.full-width {
+  width: 100%;
+}
+
+.mat-step-header {
+  pointer-events: none !important;
+}
+
+.mat-list-item {
+  height: auto !important;
+  padding: 10px 0 !important;
+}
+.warning-alert {
+  background: #f0c000;
+  color: #ffffff;
+  padding: 5px;
+  border-radius: 5px;
+}
+.error-alert {
+  background: #ff4040;
+  color: #ffffff;
+  padding: 5px;
+  border-radius: 5px;
+}
+.success-alert {
+  background: #40c040;
+  color: #ffffff;
+  padding: 5px;
+  border-radius: 5px;
+}

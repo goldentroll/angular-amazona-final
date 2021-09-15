@@ -1,0 +1,40 @@
+<div id="app">
+  <mat-toolbar color="primary">
+    <button
+      mat-icon-button
+      class="example-icon"
+      aria-label="Example icon-button with menu icon"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+    <a mat-button routerLink="/">Amazona</a>
+    <span class="example-spacer"></span>
+
+    <a mat-button routerLink="cart">
+      <span
+        *ngIf="itemsCount > 0"
+        [matBadge]="itemsCount"
+        matBadgePosition="after"
+        matBadgeOverlap="false"
+        matBadgeColor="accent"
+        >Cart</span
+      >
+      <span *ngIf="itemsCount === 0">Cart</span>
+    </a>
+    <a mat-button *ngIf="!currentUser" routerLink="login">Login</a>
+
+    <ng-container *ngIf="currentUser">
+      <button mat-button [matMenuTriggerFor]="menu">
+        {{ currentUser.name }}
+      </button>
+      <mat-menu #menu="matMenu">
+        <a mat-menu-item routerLink="profile">Profile</a>
+        <button mat-menu-item (click)="logout()">LogOut</button>
+      </mat-menu>
+    </ng-container>
+  </mat-toolbar>
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer">Amazona. All rights reserved.</div>
+</div>

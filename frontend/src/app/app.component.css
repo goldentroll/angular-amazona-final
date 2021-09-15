@@ -1,0 +1,11 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+.container {
+  margin: 20px auto;
+  max-width: 1024px;
+  min-height: 70vh;
+}
+.footer {
+  text-align: center;
+}

@@ -9,3 +9,8 @@ export interface Product {
   description: string;
   countInStock: number;
 }
+
+export interface ProductFilter {
+  category: string;
+  name: string;
+}

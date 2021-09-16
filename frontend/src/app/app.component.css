@@ -1,11 +1,47 @@
 .example-spacer {
   flex: 1 1 auto;
+  text-align: center;
 }
+
 .container {
-  margin: 20px auto;
+  margin: 15px auto;
   max-width: 1024px;
   min-height: 70vh;
 }
 .footer {
   text-align: center;
+}
+
+.example-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.sidenav .header {
+  padding: 10px;
+}
+
+form {
+  font-size: 14px;
+}
+.mat-toolbar-row,
+.mat-toolbar-single-row {
+  padding: 0;
+}
+.mat-form-field {
+  width: 100px;
+}
+.mat-button {
+  padding: 0;
+}
+@media only screen and (max-width: 480px) {
+  .container {
+    margin: 15px;
+  }
+  .hide-small-screen {
+    display: none;
+  }
 }

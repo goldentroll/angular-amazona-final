@@ -44,4 +44,11 @@ export class OrderService {
       httpOptions
     );
   }
+
+  getOrderHisoty(): Observable<Order[]> {
+    return this.http.get<Order[]>(
+      `${environment.apiUrl}/api/orders/hisotry`,
+      httpOptions
+    );
+  }
 }

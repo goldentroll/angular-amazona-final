@@ -46,3 +46,7 @@ body {
   padding: 5px;
   border-radius: 5px;
 }
+
+.divider {
+  height: 20px;
+}

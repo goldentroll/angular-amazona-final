@@ -11,11 +11,25 @@ import { PaymentMethodComponent } from './pages/payment-method/payment-method.co
 import { PlaceOrderComponent } from './pages/place-order/place-order.component';
 import { OrderComponent } from './pages/order/order.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { OrderHistoryComponent } from './pages/order-history/order-history.component';
+import { SearchComponent } from './pages/search/search.component';
 
 const routes: Routes = [
+  { path: 'search', component: SearchComponent },
   { path: 'cart', component: CartComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'order-history',
+    component: OrderHistoryComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: 'shipping',
     component: ShippingAddressComponent,

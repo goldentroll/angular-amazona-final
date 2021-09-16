@@ -54,6 +54,22 @@ export class AuthenticationService {
       );
   }
 
+  update(name: string, email: string, password: string) {
+    return this.http
+      .put<UserInfo>(`${environment.apiUrl}/api/users/update-profile`, {
+        name,
+        email,
+        password,
+      })
+      .pipe(
+        map((user) => {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          this.currentUserSubject.next(user);
+          return user;
+        })
+      );
+  }
+
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');

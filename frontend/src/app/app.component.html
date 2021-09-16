@@ -1,40 +1,95 @@
-<div id="app">
-  <mat-toolbar color="primary">
-    <button
-      mat-icon-button
-      class="example-icon"
-      aria-label="Example icon-button with menu icon"
-    >
-      <mat-icon>menu</mat-icon>
-    </button>
-    <a mat-button routerLink="/">Amazona</a>
-    <span class="example-spacer"></span>
-
-    <a mat-button routerLink="cart">
-      <span
-        *ngIf="itemsCount > 0"
-        [matBadge]="itemsCount"
-        matBadgePosition="after"
-        matBadgeOverlap="false"
-        matBadgeColor="accent"
-        >Cart</span
+<mat-sidenav-container
+  class="example-container"
+  (backdropClick)="sidenav.close()"
+>
+  <mat-sidenav
+    class="sidenav"
+    #sidenav
+    (keydown.escape)="sidenav.close()"
+    disableClose
+  >
+    <div class="header" fxLayout="row" fxLayoutAlign="space-between center">
+      <div>
+        <h5>Shopping Category</h5>
+      </div>
+      <div>
+        <button
+          (click)="sidenav.close()"
+          mat-icon-button
+          aria-label="close menu icon"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+    <mat-nav-list>
+      <a
+        (click)="sidenav.close()"
+        mat-list-item
+        [routerLink]="['/search']"
+        [queryParams]="{ category: category }"
+        *ngFor="let category of categories"
       >
-      <span *ngIf="itemsCount === 0">Cart</span>
-    </a>
-    <a mat-button *ngIf="!currentUser" routerLink="login">Login</a>
+        {{ category }}
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div id="app">
+      <mat-toolbar color="primary">
+        <button
+          (click)="sidenav.open()"
+          mat-icon-button
+          aria-label="open menu icon"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+        <a mat-button routerLink="/">Amazona</a>
 
-    <ng-container *ngIf="currentUser">
-      <button mat-button [matMenuTriggerFor]="menu">
-        {{ currentUser.name }}
-      </button>
-      <mat-menu #menu="matMenu">
-        <a mat-menu-item routerLink="profile">Profile</a>
-        <button mat-menu-item (click)="logout()">LogOut</button>
-      </mat-menu>
-    </ng-container>
-  </mat-toolbar>
-  <div class="container">
-    <router-outlet></router-outlet>
-  </div>
-  <div class="footer">Amazona. All rights reserved.</div>
-</div>
+        <div class="example-spacer">
+          <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+            <mat-form-field floatLabel="never">
+              <input
+                matInput
+                placeholder="Search..."
+                formControlName="name"
+                name="query"
+              />
+            </mat-form-field>
+            <button class="hide-small-screen" mat-button color="secondary">
+              <mat-icon>search</mat-icon>
+            </button>
+          </form>
+        </div>
+
+        <a mat-button routerLink="cart">
+          <span
+            *ngIf="itemsCount > 0"
+            [matBadge]="itemsCount"
+            matBadgePosition="after"
+            matBadgeOverlap="false"
+            matBadgeColor="accent"
+            >Cart</span
+          >
+          <span *ngIf="itemsCount === 0">Cart</span>
+        </a>
+        <a mat-button *ngIf="!currentUser" routerLink="login">Login</a>
+
+        <ng-container *ngIf="currentUser">
+          <button mat-button [matMenuTriggerFor]="menu">
+            {{ currentUser.name }}
+          </button>
+          <mat-menu #menu="matMenu">
+            <a mat-menu-item routerLink="profile">Profile</a>
+            <a mat-menu-item routerLink="order-history">Order Hisotry</a>
+            <button mat-menu-item (click)="logout()">LogOut</button>
+          </mat-menu>
+        </ng-container>
+      </mat-toolbar>
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>
+      <div class="footer">Amazona. All rights reserved.</div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

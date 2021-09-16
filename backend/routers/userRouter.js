@@ -79,7 +79,7 @@ userRouter.get(
   })
 );
 userRouter.put(
-  '/profile',
+  '/update-profile',
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);

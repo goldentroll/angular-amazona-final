@@ -1,12 +1,9 @@
 import { NgModule } from '@angular/core';
-import { NgxPayPalModule } from 'ngx-paypal';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-
+// Material
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
@@ -19,16 +16,20 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import {
   MatSnackBarModule,
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
 } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+// Other Packages
+import { NgxPayPalModule } from 'ngx-paypal';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 // pages
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -38,9 +39,14 @@ import { ShippingAddressComponent } from './pages/shipping-address/shipping-addr
 import { PaymentMethodComponent } from './pages/payment-method/payment-method.component';
 import { PlaceOrderComponent } from './pages/place-order/place-order.component';
 import { OrderComponent } from './pages/order/order.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { OrderHistoryComponent } from './pages/order-history/order-history.component';
+import { SearchComponent } from './pages/search/search.component';
 
+// helper
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,6 +59,9 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
     PlaceOrderComponent,
     OrderComponent,
     RegisterComponent,
+    ProfileComponent,
+    OrderHistoryComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,6 +86,7 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
     MatRadioModule,
     FlexLayoutModule,
     NgxPayPalModule,
+    MatSidenavModule,
   ],
   providers: [
     {

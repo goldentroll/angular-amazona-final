@@ -1,0 +1,56 @@
+<div *ngIf="loading; else result">
+  <mat-spinner></mat-spinner>
+</div>
+<ng-template #result>
+  <ng-container *ngIf="!error">
+    <h1>Order History</h1>
+    <table mat-table [dataSource]="orders" class="mat-elevation-z8">
+      <!-- Id Column -->
+      <ng-container matColumnDef="_id">
+        <th mat-header-cell *matHeaderCellDef>Id</th>
+        <td mat-cell *matCellDef="let element">
+          ...{{ element._id.substring(19, 24) }}
+        </td>
+      </ng-container>
+      <!-- Date Column -->
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef>DATE</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.createdAt }}
+        </td>
+      </ng-container>
+
+      <!-- Price Column -->
+      <ng-container matColumnDef="totalPrice">
+        <th mat-header-cell *matHeaderCellDef>TOTAL PRICE</th>
+        <td mat-cell *matCellDef="let element">${{ element.totalPrice }}</td>
+      </ng-container>
+
+      <!-- Is Paid Column -->
+      <ng-container matColumnDef="isPaid">
+        <th mat-header-cell *matHeaderCellDef>PAID</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.isPaid ? element.paidAt : "NO" }}
+        </td>
+      </ng-container>
+
+      <!-- isDelivered Column -->
+      <ng-container matColumnDef="isDelivered">
+        <th mat-header-cell *matHeaderCellDef>DELIVERED</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.isDelivered ? element.deliveredAt : "NO" }}
+        </td>
+      </ng-container>
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>ACTION</th>
+        <td mat-cell *matCellDef="let element">
+          <a [routerLink]="['/order/' + element._id]" mat-button> DETAILS </a>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </ng-container>
+</ng-template>

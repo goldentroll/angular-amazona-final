@@ -5,7 +5,6 @@ import { Title } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Order } from 'src/app/models/order';
 import { OrderService } from 'src/app/services/order.service';
-import { BehaviorSubject } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserInfo } from 'src/app/models';
 
@@ -31,7 +30,6 @@ export class OrderComponent implements OnInit {
 
   constructor(
     private titleService: Title,
-    private router: Router,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
     orderService: OrderService,
@@ -55,19 +53,6 @@ export class OrderComponent implements OnInit {
       });
     }
   }
-  deliverOrder() {
-    this.orderService.deliver(this.order._id).subscribe(
-      (data) => {
-        this.getOrder(this.order._id);
-        this.snackBar.open('Order delivered successfully', '', {
-          panelClass: 'success-snackbar',
-        });
-      },
-      (err) => {
-        this.snackBar.open(err, '', { panelClass: 'error-snackbar' });
-      }
-    );
-  }
   private getOrder(orderId: string) {
     this.orderService.getOrder(orderId).subscribe(
       (data) => {
@@ -82,6 +67,19 @@ export class OrderComponent implements OnInit {
       (err) => {
         this.loading = false;
         this.error = true;
+        this.snackBar.open(err, '', { panelClass: 'error-snackbar' });
+      }
+    );
+  }
+  deliverOrder() {
+    this.orderService.deliver(this.order._id).subscribe(
+      (data) => {
+        this.getOrder(this.order._id);
+        this.snackBar.open('Order delivered successfully', '', {
+          panelClass: 'success-snackbar',
+        });
+      },
+      (err) => {
         this.snackBar.open(err, '', { panelClass: 'error-snackbar' });
       }
     );

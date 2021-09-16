@@ -73,7 +73,7 @@ orderRouter.get(
 );
 
 orderRouter.get(
-  '/mine',
+  '/hisotry',
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const orders = await Order.find({ user: req.user._id });

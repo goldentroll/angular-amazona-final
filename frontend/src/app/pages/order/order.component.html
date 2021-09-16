@@ -4,7 +4,7 @@
 <ng-template #result>
   <ng-container *ngIf="!error">
     <h1>Order ...{{ order._id.substring(19, 24) }}</h1>
-    <div fxLayout="row wrap" fxLayoutGap="20px grid" fxLayoutGap.xs="0 grid">
+    <div fxLayout="row wrap" fxLayoutGap="20px grid" fxLayoutGap.xs="10px grid">
       <div fxFlex="70%" fxFlex.xs="100%">
         <table mat-table [dataSource]="order.items" class="mat-elevation-z8">
           <!-- Image Column -->

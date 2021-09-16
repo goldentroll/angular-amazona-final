@@ -1,3 +1,7 @@
 .back-to-result {
   margin-bottom: 40px;
 }
+.mat-card-image {
+  width: 100%;
+  margin: 0;
+}

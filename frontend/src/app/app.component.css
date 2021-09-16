@@ -4,8 +4,9 @@
 }
 
 .container {
-  margin: 15px auto;
-  max-width: 1024px;
+  margin: 0 auto;
+  padding: 20px;
+  /* max-width: 980px; */
   min-height: 70vh;
 }
 .footer {
@@ -38,9 +39,6 @@ form {
   padding: 0;
 }
 @media only screen and (max-width: 480px) {
-  .container {
-    margin: 10px;
-  }
   .hide-small-screen {
     display: none;
   }

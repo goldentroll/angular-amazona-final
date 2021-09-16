@@ -39,9 +39,12 @@ form {
 }
 @media only screen and (max-width: 480px) {
   .container {
-    margin: 15px;
+    margin: 10px;
   }
   .hide-small-screen {
     display: none;
+  }
+  .mat-vertical-content {
+    padding: 0 !important;
   }
 }

@@ -50,3 +50,9 @@ body {
 .divider {
   height: 20px;
 }
+
+@media only screen and (max-width: 480px) {
+  .mat-vertical-content {
+    padding: 0 !important;
+  }
+}

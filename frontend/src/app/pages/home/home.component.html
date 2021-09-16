@@ -3,11 +3,15 @@
 </div>
 
 <ng-template #result>
-  <div *ngIf="!error" fxLayout="row wrap" fxLayoutGap="20px grid">
+  <div
+    *ngIf="!error"
+    fxLayout="row wrap"
+    fxLayoutGap="20px grid"
+    fxLayoutGap.xs="10px grid"
+  >
     <div
       [fxFlex]="100 / 3 + '%'"
       fxFlex.xs="100%"
-      fxFlex.sm="33%"
       *ngFor="let product of products"
     >
       <mat-card class="mat-elevation-z4">

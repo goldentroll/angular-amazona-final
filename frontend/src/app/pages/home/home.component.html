@@ -10,17 +10,19 @@
     fxLayoutGap.xs="10px grid"
   >
     <div
-      [fxFlex]="100 / 3 + '%'"
+      fxFlex="25%"
+      fxFlex.sm="33%"
       fxFlex.xs="100%"
       *ngFor="let product of products"
     >
       <mat-card class="mat-elevation-z4">
         <a [routerLink]="'/product/' + product.slug">
-          <img mat-card-image [src]="'../assets' + product.image" />
+          <img mat-card-image [src]="product.image" />
           <mat-card-content>
             <p>
               {{ product.name }}
             </p>
+            <app-rating [rating]="product.rating"></app-rating>
           </mat-card-content>
         </a>
         <mat-card-actions>

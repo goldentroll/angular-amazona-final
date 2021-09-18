@@ -1,0 +1,25 @@
+<div *ngIf="loading; else result">
+  <mat-spinner></mat-spinner>
+</div>
+
+<ng-template #result>
+  <div>
+    <google-map
+      (idle)="idle()"
+      [center]="center"
+      [zoom]="6"
+      height="80vh"
+      width="100%"
+    >
+      <map-marker [position]="center" [options]="markerOptions"></map-marker>
+    </google-map>
+  </div>
+  <button
+    class="confirm-button"
+    mat-raised-button
+    color="primary"
+    (click)="confirm()"
+  >
+    Confirm Location
+  </button>
+</ng-template>

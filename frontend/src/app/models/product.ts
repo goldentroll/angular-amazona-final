@@ -8,9 +8,17 @@ export interface Product {
   category: string;
   description: string;
   countInStock: number;
+  rating: number;
+  numReviews: number;
+  reviews: any[];
 }
 
 export interface ProductFilter {
   category: string;
+  name: string;
+}
+export interface Review {
+  rating: string;
+  comment: string;
   name: string;
 }

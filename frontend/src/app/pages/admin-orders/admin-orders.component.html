@@ -1,0 +1,81 @@
+<div *ngIf="loading; else result">
+  <mat-spinner></mat-spinner>
+</div>
+<ng-template #result>
+  <ng-container *ngIf="!error">
+    <div fxLayout="row wrap" fxLayoutGap="20px grid" fxLayoutGap.xs="10px grid">
+      <div fxFlex="20%" fxFlex.xs="100%">
+        <mat-nav-list>
+          <a mat-list-item routerLink="/admin/dashboard">Dashboard</a>
+          <a mat-list-item class="selected" routerLink="/admin/orders"
+            >Orders</a
+          >
+          <a mat-list-item routerLink="/admin/products">Products</a>
+          <a mat-list-item routerLink="/admin/users">Users</a>
+        </mat-nav-list>
+      </div>
+      <div fxFlex="80%" fxFlex.xs="100%">
+        <h1>Admin Orders</h1>
+        <table mat-table [dataSource]="orders" class="mat-elevation-z8">
+          <!-- Id Column -->
+          <ng-container matColumnDef="_id">
+            <th mat-header-cell *matHeaderCellDef>Id</th>
+            <td mat-cell *matCellDef="let element">
+              ...{{ element._id.substring(19, 24) }}
+            </td>
+          </ng-container>
+          <!-- User Column -->
+          <ng-container matColumnDef="user">
+            <th mat-header-cell *matHeaderCellDef>User</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.user.name }}
+            </td>
+          </ng-container>
+          <!-- Date Column -->
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef>DATE</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.createdAt }}
+            </td>
+          </ng-container>
+
+          <!-- Price Column -->
+          <ng-container matColumnDef="totalPrice">
+            <th mat-header-cell *matHeaderCellDef>TOTAL PRICE</th>
+            <td mat-cell *matCellDef="let element">
+              ${{ element.totalPrice }}
+            </td>
+          </ng-container>
+
+          <!-- Is Paid Column -->
+          <ng-container matColumnDef="isPaid">
+            <th mat-header-cell *matHeaderCellDef>PAID</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.isPaid ? element.paidAt : "NO" }}
+            </td>
+          </ng-container>
+
+          <!-- isDelivered Column -->
+          <ng-container matColumnDef="isDelivered">
+            <th mat-header-cell *matHeaderCellDef>DELIVERED</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.isDelivered ? element.deliveredAt : "NO" }}
+            </td>
+          </ng-container>
+
+          <!-- Action Column -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>ACTION</th>
+            <td mat-cell *matCellDef="let element">
+              <a [routerLink]="['/order/' + element._id]" mat-button>
+                DETAILS
+              </a>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>

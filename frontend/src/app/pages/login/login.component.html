@@ -2,8 +2,8 @@
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <h2>Log In</h2>
-      <mat-list class="full-width" role="list">
-        <mat-list-item role="listitem">
+      <mat-list>
+        <mat-list-item>
           <mat-form-field class="full-width">
             <input
               matInput
@@ -14,7 +14,7 @@
             <mat-error> Please provide a valid email address </mat-error>
           </mat-form-field>
         </mat-list-item>
-        <mat-list-item role="listitem">
+        <mat-list-item>
           <mat-form-field class="full-width">
             <input
               matInput
@@ -26,14 +26,14 @@
             <mat-error> Please provide a valid password </mat-error>
           </mat-form-field>
         </mat-list-item>
-        <mat-list-item role="listitem">
+        <mat-list-item>
           <button [disabled]="loading" mat-raised-button color="primary">
             Login
           </button>
           <mat-spinner [diameter]="30" *ngIf="loading"></mat-spinner>
         </mat-list-item>
 
-        <mat-list-item role="listitem">
+        <mat-list-item>
           New user? &nbsp;
           <a
             [routerLink]="['/register']"

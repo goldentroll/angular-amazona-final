@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Product } from '../../models/product';
+import { Product, Review } from '../../models/product';
 import { ProductService } from '../../services/product.service';
-
-import { Cart } from '../../models/cart';
 import { CartService } from 'src/app/services/cart.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -14,7 +12,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./product-details.component.css'],
 })
 export class ProductDetailsComponent implements OnInit {
-  error: string = '';
+  error = false;
+  loading = true;
   product: Product = {
     _id: '',
     name: '',
@@ -25,6 +24,9 @@ export class ProductDetailsComponent implements OnInit {
     description: '',
     countInStock: 0,
     slug: '',
+    rating: 0,
+    numReviews: 0,
+    reviews: [],
   };
   constructor(
     private titleService: Title,
@@ -41,15 +43,24 @@ export class ProductDetailsComponent implements OnInit {
     if (slug) {
       this.productService.getProductBySlug(slug).subscribe(
         (data) => {
+          this.loading = false;
           this.product = data;
           this.titleService.setTitle(this.product.name);
         },
         (err) => {
-          this.error = err.message;
+          this.error = true;
+          this.loading = false;
+          this.snackBar.open(err, '', {
+            panelClass: 'error-snackbar',
+          });
         }
       );
     } else {
-      this.error = 'Product not found';
+      this.error = true;
+      this.loading = false;
+      this.snackBar.open('Product not found', '', {
+        panelClass: 'error-snackbar',
+      });
     }
   }
   addToCart() {
@@ -57,14 +68,15 @@ export class ProductDetailsComponent implements OnInit {
     this.cartService
       .add({ _id, image, name, slug, price, quantity: 1 })
       .subscribe(
-        (productName) =>
+        (productName) => {
           this.snackBar.open(`${productName} added to the cart`, '', {
             panelClass: 'success-snackbar',
-          }),
+          });
+          this.router.navigate(['/cart']);
+        },
         (err) => {
           this.snackBar.open(err.message, '', { panelClass: 'error-snackbar' });
         }
       );
-    this.router.navigate(['/cart']);
   }
 }

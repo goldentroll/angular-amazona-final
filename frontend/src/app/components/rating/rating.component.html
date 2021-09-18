@@ -1,0 +1,6 @@
+<div fxLayout="row wrap" fxLayoutAlign="start center">
+  <mat-icon *ngFor="let rating of ratings">{{ rating }}</mat-icon>
+  <a mat-button *ngIf="numReviews" [routerLink]="reviewUrl" fragment="reviews">
+    <span>({{ numReviews }} reviews)</span>
+  </a>
+</div>

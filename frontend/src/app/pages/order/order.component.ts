@@ -5,7 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Order } from 'src/app/models/order';
 import { OrderService } from 'src/app/services/order.service';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from 'src/app/models';
 
 @Component({
@@ -34,15 +34,13 @@ export class OrderComponent implements OnInit {
     private route: ActivatedRoute,
     orderService: OrderService,
     private cd: ChangeDetectorRef,
-    private authenticationService: AuthenticationService
+    private authService: AuthService
   ) {
     this.orderService = orderService;
   }
 
   ngOnInit() {
-    this.authenticationService.currentUser.subscribe(
-      (x) => (this.currentUser = x)
-    );
+    this.authService.currentUser.subscribe((x) => (this.currentUser = x));
     const routeParams = this.route.snapshot.paramMap;
     const orderId = routeParams.get('id');
     if (orderId) {

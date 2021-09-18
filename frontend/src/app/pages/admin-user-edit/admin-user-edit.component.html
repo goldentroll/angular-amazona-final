@@ -1,0 +1,38 @@
+﻿<div *ngIf="loading; else result">
+  <mat-spinner></mat-spinner>
+</div>
+<ng-template #result>
+  <ng-container *ngIf="!error">
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <h1>Update User {{ user._id }}</h1>
+
+          <mat-list>
+            <mat-list-item>
+              <mat-form-field class="full-width">
+                <input
+                  matInput
+                  placeholder="Name"
+                  formControlName="name"
+                  required
+                />
+                <mat-error> Please provide a name </mat-error>
+              </mat-form-field>
+            </mat-list-item>
+            <mat-list-item>
+              <mat-checkbox formControlName="isAdmin">IsAdmin</mat-checkbox>
+            </mat-list-item>
+            <mat-list-item>
+              <button [disabled]="loading" mat-raised-button color="primary">
+                Update
+              </button>
+              <mat-spinner [diameter]="30" *ngIf="loading"></mat-spinner>
+              <a mat-button routerLink="/admin/users"> Back </a>
+            </mat-list-item>
+          </mat-list>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+</ng-template>

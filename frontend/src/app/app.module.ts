@@ -17,6 +17,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
   MatSnackBarModule,
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
@@ -42,10 +43,15 @@ import { OrderComponent } from './pages/order/order.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { OrderHistoryComponent } from './pages/order-history/order-history.component';
 import { SearchComponent } from './pages/search/search.component';
-
+import { AdminOrdersComponent } from './pages/admin-orders/admin-orders.component';
+import { AdminProductsComponent } from './pages/admin-products/admin-products.component';
+import { RatingComponent } from './components/rating/rating.component';
 // helper
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
+import { AdminProductEditComponent } from './pages/admin-product-edit/admin-product-edit.component';
+import { AdminUsersComponent } from './pages/admin-users/admin-users.component';
+import { AdminUserEditComponent } from './pages/admin-user-edit/admin-user-edit.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +68,12 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
     ProfileComponent,
     OrderHistoryComponent,
     SearchComponent,
+    AdminOrdersComponent,
+    AdminProductsComponent,
+    AdminProductEditComponent,
+    AdminUsersComponent,
+    AdminUserEditComponent,
+    RatingComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,6 +95,7 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
     MatTableModule,
     MatStepperModule,
     MatProgressSpinnerModule,
+    MatCheckboxModule,
     MatRadioModule,
     FlexLayoutModule,
     NgxPayPalModule,

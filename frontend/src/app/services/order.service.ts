@@ -45,6 +45,20 @@ export class OrderService {
     );
   }
 
+  getAdminOrders(): Observable<Order> {
+    return this.http.get<Order>(
+      `${environment.apiUrl}/api/orders`,
+      httpOptions
+    );
+  }
+
+  getOrderSummary(): Observable<any> {
+    return this.http.get<any>(
+      `${environment.apiUrl}/api/orders/summary`,
+      httpOptions
+    );
+  }
+
   getOrderHisoty(): Observable<Order[]> {
     return this.http.get<Order[]>(
       `${environment.apiUrl}/api/orders/hisotry`,

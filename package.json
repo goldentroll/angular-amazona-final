@@ -21,6 +21,7 @@
   "homepage": "https://github.com/basir/amazona#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.27.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -29,7 +30,8 @@
     "mailgun-js": "^0.22.0",
     "mongoose": "^5.10.7",
     "multer": "^1.4.2",
-    "socket.io": "^4.0.1"
+    "socket.io": "^4.0.1",
+    "streamifier": "^0.1.1"
   },
   "devDependencies": {
     "eslint": "^7.9.0",

@@ -12,6 +12,8 @@ export interface ShippingAddress {
   city: string;
   country: string;
   postalCode: string;
+  lat: number;
+  lng: number;
 }
 export interface Cart {
   items: Item[];

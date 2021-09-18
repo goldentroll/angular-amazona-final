@@ -82,7 +82,12 @@
           <mat-menu #menu="matMenu">
             <a mat-menu-item routerLink="profile">Profile</a>
             <a mat-menu-item routerLink="order-history">Order Hisotry</a>
-            <button mat-menu-item (click)="logout()">LogOut</button>
+            <a *ngIf="currentUser" mat-menu-item routerLink="admin/dashboard"
+              >Admin</a
+            >
+            <button *ngIf="currentUser" mat-menu-item (click)="logout()">
+              LogOut
+            </button>
           </mat-menu>
         </ng-container>
       </mat-toolbar>

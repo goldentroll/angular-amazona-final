@@ -85,7 +85,7 @@ I teach you:
 - Handling shopping cart using services and local storage
 - Building backend web api by node and express js
 - Creating MongoDB database and performing CRUD operations on database models by mongoose
-- Handling authentication and authorization using JsonWebToken and express middleware
+- Handling auth and authorization using JsonWebToken and express middleware
 - Creating admin dashboard to show sales charts, manage products and handle orders
 
 Also you will learn how to use online cloud services to:
@@ -112,7 +112,7 @@ I'll teach you:
 - CSS Styling for laying out the website to make it beautiful and easy to use
 - Node.JS to create backend API  
 - Mongodb to create database to save foods and cusotmers
-- JWT for implementing the Authentication mechanism
+- JWT for implementing the Auth mechanism
 - PayPal API to make online payments inside your website
 
 

@@ -1,14 +1,6 @@
-.mat-horizontal-stepper-header {
-  pointer-events: none !important;
-}
-
 table {
   width: 100%;
 }
 .thumbnail {
   width: 80px;
-}
-
-.divider {
-  height: 20px;
 }

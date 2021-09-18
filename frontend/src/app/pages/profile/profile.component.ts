@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthenticationService } from '../../services/authentication.service';
+import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar,
-    private authenticationService: AuthenticationService
+    private authService: AuthService
   ) {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
@@ -31,7 +31,7 @@ export class ProfileComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
   ngOnInit(): void {
-    this.authenticationService.currentUser.subscribe((x) => {
+    this.authService.currentUser.subscribe((x) => {
       if (!x) {
         return;
       }
@@ -48,19 +48,17 @@ export class ProfileComponent implements OnInit {
     }
     const { name, email, password } = this.form.controls;
     this.loading = true;
-    this.authenticationService
-      .update(name.value, email.value, password.value)
-      .subscribe(
-        (data) => {
-          this.snackBar.open('Profile updated successfully', '', {
-            panelClass: 'success-snackbar',
-          });
-          this.loading = false;
-        },
-        (error) => {
-          this.snackBar.open(error, '', { panelClass: 'error-snackbar' });
-          this.loading = false;
-        }
-      );
+    this.authService.update(name.value, email.value, password.value).subscribe(
+      (data) => {
+        this.snackBar.open('Profile updated successfully', '', {
+          panelClass: 'success-snackbar',
+        });
+        this.loading = false;
+      },
+      (error) => {
+        this.snackBar.open(error, '', { panelClass: 'error-snackbar' });
+        this.loading = false;
+      }
+    );
   }
 }

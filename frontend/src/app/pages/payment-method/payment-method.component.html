@@ -11,8 +11,8 @@
       <mat-card-content>
         <form [formGroup]="form" (ngSubmit)="onSubmit()" #ngForm="ngForm">
           <h2>Payment Method</h2>
-          <mat-list role="list">
-            <mat-list-item role="listitem">
+          <mat-list>
+            <mat-list-item>
               <mat-radio-group
                 formControlName="paymentMethod"
                 aria-label="Select an option"
@@ -38,7 +38,7 @@
                 </mat-error>
               </mat-radio-group>
             </mat-list-item>
-            <mat-list-item role="listitem">
+            <mat-list-item>
               <button
                 type="button"
                 (click)="back()"

@@ -7,7 +7,7 @@ import { Product } from 'src/app/models/product';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 import { User } from '../../models/user';
-import { AuthenticationService } from '../../services/authentication.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',

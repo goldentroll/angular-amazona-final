@@ -1,0 +1,9 @@
+mat-card {
+  max-width: 400px;
+  margin: 1em auto;
+  text-align: center;
+}
+
+.hide {
+  display: none;
+}

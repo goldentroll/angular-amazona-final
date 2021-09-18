@@ -11,7 +11,7 @@
           <ng-container matColumnDef="image">
             <th mat-header-cell *matHeaderCellDef>Image</th>
             <td class="thumbnail-cell" mat-cell *matCellDef="let element">
-              <img [src]="'../assets' + element.image" class="thumbnail" />
+              <img [src]="element.image" class="thumbnail" />
             </td>
           </ng-container>
           <!-- Name Column -->
@@ -52,11 +52,9 @@
         <div class="divider"></div>
         <mat-card class="mat-elevation-z4">
           <h2>Payment Method</h2>
-          <mat-list role="list">
-            <mat-list-item role="listitem">
-              Method: {{ order.paymentMethod }}
-            </mat-list-item>
-            <mat-list-item role="listitem">
+          <mat-list>
+            <mat-list-item> Method: {{ order.paymentMethod }} </mat-list-item>
+            <mat-list-item>
               Status: &nbsp;
               <span class="success-alert" *ngIf="order.isPaid">
                 Paid at {{ order.paidAt }}
@@ -70,15 +68,28 @@
         <div class="divider"></div>
         <mat-card class="mat-elevation-z4">
           <h2>Shipping Address</h2>
-          <mat-list role="list">
-            <mat-list-item role="listitem">
+          <mat-list>
+            <mat-list-item>
               Address: {{ order.shippingAddress.fullName }},
               {{ order.shippingAddress.address }},
               {{ order.shippingAddress.city }},
               {{ order.shippingAddress.country }},
               {{ order.shippingAddress.postalCode }}
+
+              <a
+                mat-button
+                target="_blank"
+                [href]="
+                  'https://maps.google.com?q=' +
+                  order.shippingAddress.lat +
+                  ',' +
+                  order.shippingAddress.lng
+                "
+              >
+                Show On Map
+              </a>
             </mat-list-item>
-            <mat-list-item role="listitem">
+            <mat-list-item>
               Status: &nbsp;
               <span class="success-alert" *ngIf="order.isDelivered">
                 Delivered at {{ order.deliveredAt }}
@@ -94,32 +105,32 @@
       <div fxFlex="30%" fxFlex.xs="100%">
         <mat-card class="mat-elevation-z4">
           <h2>Order Summary</h2>
-          <mat-list role="list">
-            <mat-list-item role="listitem">
+          <mat-list>
+            <mat-list-item>
               <div class="full-width" fxLayout="row">
                 <div fxFlex="75%">Items :</div>
                 <div fxFlex="25%">${{ order.itemsPrice }}</div>
               </div>
             </mat-list-item>
-            <mat-list-item role="listitem">
+            <mat-list-item>
               <div class="full-width" fxLayout="row">
                 <div fxFlex="75%">Shipping :</div>
                 <div fxFlex="25%">${{ order.shippingPrice }}</div>
               </div>
             </mat-list-item>
-            <mat-list-item role="listitem">
+            <mat-list-item>
               <div class="full-width" fxLayout="row">
                 <div fxFlex="75%">Tax :</div>
                 <div fxFlex="25%">${{ order.taxPrice }}</div>
               </div>
             </mat-list-item>
-            <mat-list-item role="listitem">
+            <mat-list-item>
               <div class="full-width" fxLayout="row">
                 <div fxFlex="75%">Total :</div>
                 <div fxFlex="25%">${{ order.totalPrice }}</div>
               </div>
             </mat-list-item>
-            <mat-list-item *ngIf="!order.isPaid" role="listitem">
+            <mat-list-item *ngIf="!order.isPaid">
               <ngx-paypal [config]="payPalConfig"></ngx-paypal>
             </mat-list-item>
             <mat-list-item
@@ -129,7 +140,6 @@
                 currentUser &&
                 currentUser.isAdmin
               "
-              role="listitem"
             >
               <button
                 (click)="deliverOrder()"

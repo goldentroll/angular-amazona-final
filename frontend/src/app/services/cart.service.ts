@@ -15,6 +15,8 @@ const defaultCart: Cart = {
     city: '',
     country: '',
     postalCode: '',
+    lat: 0,
+    lng: 0,
   },
   paymentMethod: '',
   itemsCount: 0,
@@ -100,9 +102,26 @@ export class CartService {
 
   saveShippingAddress(shippingAddress: ShippingAddress) {
     const cart = this.currentCartSubject.value;
-    cart.shippingAddress = shippingAddress;
+    cart.shippingAddress = {
+      ...shippingAddress,
+      lat: cart.shippingAddress.lat,
+      lng: cart.shippingAddress.lng,
+    };
     localStorage.setItem('currentCart', JSON.stringify(cart));
     this.currentCartSubject.next(cart);
+  }
+
+  saveShippingLocation(lat: number, lng: number) {
+    const cart = this.currentCartSubject.value;
+    cart.shippingAddress.lat = lat;
+    cart.shippingAddress.lng = lng;
+    localStorage.setItem('currentCart', JSON.stringify(cart));
+    this.currentCartSubject.next(cart);
+  }
+
+  getShippingAddress() {
+    const cart = this.currentCartSubject.value;
+    return `${cart.shippingAddress.address}, ${cart.shippingAddress.city}, ${cart.shippingAddress.country}`;
   }
   savePaymentMethod(paymentMethod: string) {
     const cart = this.currentCartSubject.value;

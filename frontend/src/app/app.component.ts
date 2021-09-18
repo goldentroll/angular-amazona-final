@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserInfo } from './models';
-import { AuthenticationService } from './services/authentication.service';
+import { AuthService } from './services/auth.service';
 import { CartService } from './services/cart.service';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ProductService } from './services/product.service';
@@ -25,7 +25,7 @@ export class AppComponent {
     private formBuilder: FormBuilder,
     private router: Router,
     private cartService: CartService,
-    private authenticationService: AuthenticationService,
+    private authService: AuthService,
     private productService: ProductService
   ) {
     this.searchForm = this.formBuilder.group({
@@ -33,9 +33,7 @@ export class AppComponent {
     });
   }
   ngOnInit() {
-    this.authenticationService.currentUser.subscribe(
-      (x) => (this.currentUser = x)
-    );
+    this.authService.currentUser.subscribe((x) => (this.currentUser = x));
     this.cartService.currentCart.subscribe(
       (x) => (this.itemsCount = x.itemsCount)
     );
@@ -50,7 +48,7 @@ export class AppComponent {
   }
 
   logout() {
-    this.authenticationService.logout();
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 }

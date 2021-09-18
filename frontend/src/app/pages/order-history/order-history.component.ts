@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Order } from 'src/app/models/order';
 import { OrderService } from 'src/app/services/order.service';
 import { BehaviorSubject } from 'rxjs';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from 'src/app/models';
 
 @Component({
@@ -35,7 +35,7 @@ export class OrderHistoryComponent implements OnInit {
     private route: ActivatedRoute,
     orderService: OrderService,
     private cd: ChangeDetectorRef,
-    private authenticationService: AuthenticationService
+    private authService: AuthService
   ) {
     this.orderService = orderService;
   }

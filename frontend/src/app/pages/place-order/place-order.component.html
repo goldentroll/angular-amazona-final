@@ -17,7 +17,7 @@
           <ng-container matColumnDef="image">
             <th mat-header-cell *matHeaderCellDef>Image</th>
             <td class="thumbnail-cell" mat-cell *matCellDef="let element">
-              <img [src]="'../assets' + element.image" class="thumbnail" />
+              <img [src]="element.image" class="thumbnail" />
             </td>
           </ng-container>
           <!-- Name Column -->
@@ -74,14 +74,14 @@
         <div class="divider"></div>
         <mat-card class="mat-elevation-z4">
           <h2>Shipping Address</h2>
-          <mat-list role="list">
-            <mat-list-item role="listitem">
+          <mat-list>
+            <mat-list-item>
               {{ cart.shippingAddress.fullName }},
               {{ cart.shippingAddress.address }},
               {{ cart.shippingAddress.city }},
               {{ cart.shippingAddress.country }},
               {{ cart.shippingAddress.postalCode }} </mat-list-item
-            ><mat-list-item role="listitem">
+            ><mat-list-item>
               <button (click)="goShipping()" mat-raised-button>EDIT</button>
             </mat-list-item>
           </mat-list>
@@ -90,11 +90,11 @@
         <div class="divider"></div>
         <mat-card class="mat-elevation-z4">
           <h2>Payment Method</h2>
-          <mat-list role="list">
-            <mat-list-item role="listitem">
+          <mat-list>
+            <mat-list-item>
               {{ cart.paymentMethod }}
             </mat-list-item>
-            <mat-list-item role="listitem">
+            <mat-list-item>
               <button (click)="goPayment()" mat-raised-button>EDIT</button>
             </mat-list-item>
           </mat-list>
@@ -104,26 +104,26 @@
       <div fxFlex="30%" fxFlex.xs="100%">
         <mat-card class="mat-elevation-z4">
           <h2>Order Summary</h2>
-          <mat-list role="list">
-            <mat-list-item role="listitem">
+          <mat-list>
+            <mat-list-item>
               <div class="full-width" fxLayout="row">
                 <div fxFlex="75%">Items :</div>
                 <div fxFlex="25%">${{ cart.itemsPrice }}</div>
               </div>
             </mat-list-item>
-            <mat-list-item role="listitem">
+            <mat-list-item>
               <div class="full-width" fxLayout="row">
                 <div fxFlex="75%">Shipping :</div>
                 <div fxFlex="25%">${{ cart.shippingPrice }}</div>
               </div>
             </mat-list-item>
-            <mat-list-item role="listitem">
+            <mat-list-item>
               <div class="full-width" fxLayout="row">
                 <div fxFlex="75%">Tax :</div>
                 <div fxFlex="25%">${{ cart.taxPrice }}</div>
               </div>
             </mat-list-item>
-            <mat-list-item role="listitem">
+            <mat-list-item>
               <div class="full-width" fxLayout="row">
                 <div fxFlex="75%">Total :</div>
                 <div fxFlex="25%">${{ cart.totalPrice }}</div>

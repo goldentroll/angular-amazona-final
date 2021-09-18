@@ -6,7 +6,7 @@ import { UserInfo } from '../models/user';
 import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
-export class AuthenticationService {
+export class AuthService {
   private currentUserSubject: BehaviorSubject<UserInfo | null>;
   public currentUser: Observable<UserInfo | null>;
 

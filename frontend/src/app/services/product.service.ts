@@ -2,16 +2,33 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { ProductFilter } from '../models/product';
+import { Product, ProductFilter } from '../models/product';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
+  getAdminProducts() {
+    return this.http.get(`${environment.apiUrl}/api/products`, {
+      responseType: 'json',
+    });
+  }
   constructor(private http: HttpClient) {}
 
   getProducts(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/products`, {
+      responseType: 'json',
+    });
+  }
+
+  createProduct(): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/products`, {
+      responseType: 'json',
+    });
+  }
+
+  deleteProduct(productId: string): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/products/${productId}`, {
       responseType: 'json',
     });
   }
@@ -45,5 +62,17 @@ export class ProductService {
     return this.http.get(`${environment.apiUrl}/api/products/slug/${slug}`, {
       responseType: 'json',
     });
+  }
+  postFile(fileToUpload: File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('image', fileToUpload, fileToUpload.name);
+    return this.http.post(`${environment.apiUrl}/api/uploads`, formData);
+  }
+
+  update(product: Product) {
+    return this.http.put<Product>(
+      `${environment.apiUrl}/api/products/${product._id}`,
+      product
+    );
   }
 }

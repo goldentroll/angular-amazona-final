@@ -18,6 +18,7 @@ export class ShippingAddressComponent implements OnInit {
   form: FormGroup;
   submitted = false;
   cartService: CartService;
+  shippingLocation: { lat: number; lng: number } = { lat: 0, lng: 0 };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,12 +41,17 @@ export class ShippingAddressComponent implements OnInit {
 
   ngOnInit(): void {
     this.cartService.currentCart.subscribe((x) => {
+      this.shippingLocation.lat = x.shippingAddress.lat;
+      this.shippingLocation.lng = x.shippingAddress.lng;
       this.form.patchValue({ fullName: x.shippingAddress.fullName });
       this.form.patchValue({ address: x.shippingAddress.address });
       this.form.patchValue({ city: x.shippingAddress.city });
       this.form.patchValue({ country: x.shippingAddress.country });
       this.form.patchValue({ postalCode: x.shippingAddress.postalCode });
     });
+  }
+  chooseLocation() {
+    this.router.navigate(['/choose-location']);
   }
 
   onSubmit() {
@@ -61,6 +67,8 @@ export class ShippingAddressComponent implements OnInit {
       city: city.value,
       country: country.value,
       postalCode: postalCode.value,
+      lat: 0,
+      lng: 0,
     });
     this.router.navigate(['/payment']);
   }

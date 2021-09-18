@@ -1,12 +1,9 @@
-.mat-horizontal-stepper-header {
-  pointer-events: none !important;
-}
 mat-card {
   max-width: 400px;
   margin: 1em auto;
   text-align: center;
 }
-
-mat-form-field {
-  display: block !important;
+.small {
+  font-size: 12px;
+  padding: 5px;
 }

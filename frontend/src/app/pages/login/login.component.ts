@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AuthenticationService } from '../../services/authentication.service';
+import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -23,9 +23,9 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar,
-    private authenticationService: AuthenticationService
+    private authService: AuthService
   ) {
-    if (this.authenticationService.currentUserValue) {
+    if (this.authService.currentUserValue) {
       this.router.navigate(['/']);
     }
 
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
     }
     const { email, password } = this.form.controls;
     this.loading = true;
-    this.authenticationService
+    this.authService
       .login(email.value, password.value)
       .pipe(first())
       .subscribe(

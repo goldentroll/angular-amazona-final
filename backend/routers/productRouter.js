@@ -179,7 +179,7 @@ productRouter.post(
       description: 'sample description',
     });
     const createdProduct = await product.save();
-    res.send({ message: 'Product Created', product: createdProduct });
+    res.send(createdProduct);
   })
 );
 productRouter.put(

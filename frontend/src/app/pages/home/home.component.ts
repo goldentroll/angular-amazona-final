@@ -1,13 +1,12 @@
 ﻿import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Title } from '@angular/platform-browser';
-import { first } from 'rxjs/operators';
-import { Item } from 'src/app/models/cart';
 import { Product } from 'src/app/models/product';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
-import { User } from '../../models/user';
-import { AuthService } from '../../services/auth.service';
+
+import SwiperCore, { Navigation, Pagination } from 'swiper';
+SwiperCore.use([Navigation, Pagination]);
 
 @Component({
   selector: 'app-home',
@@ -55,5 +54,11 @@ export class HomeComponent {
           this.snackBar.open(err.message, '', { panelClass: 'error-snackbar' });
         }
       );
+  }
+  onSwiper(swiper: any) {
+    console.log(swiper);
+  }
+  onSlideChange() {
+    console.log('slide change');
   }
 }

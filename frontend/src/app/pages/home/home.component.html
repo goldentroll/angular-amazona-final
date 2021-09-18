@@ -3,6 +3,22 @@
 </div>
 
 <ng-template #result>
+  <swiper
+    [autoHeight]="true"
+    [autoplay]="true"
+    [loop]="true"
+    [navigation]="true"
+    [pagination]="true"
+  >
+    <ng-template swiperSlide>
+      <img src="../assets/images/banner1.jpg" alt="banner 1" />
+    </ng-template>
+
+    <ng-template swiperSlide>
+      <img src="../assets/images/banner2.jpg" alt="banner 1" />
+    </ng-template>
+  </swiper>
+  <h2>Latest Products</h2>
   <div
     *ngIf="!error"
     fxLayout="row wrap"

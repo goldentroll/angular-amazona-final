@@ -125,13 +125,11 @@ export class OrderComponent implements OnInit {
         });
       },
       onCancel: (data, actions) => {
-        console.log('OnCancel', data, actions);
         this.snackBar.open('Payment canceled', '', {
           panelClass: 'error-snackbar',
         });
       },
       onError: (err) => {
-        console.log('OnError', err);
         this.snackBar.open(err, '', { panelClass: 'error-snackbar' });
       },
     };

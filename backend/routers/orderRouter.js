@@ -122,7 +122,6 @@ orderRouter.put(
   '/:id/pay',
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    console.log(req.body);
     const order = await Order.findById(req.params.id).populate(
       'user',
       'email name'

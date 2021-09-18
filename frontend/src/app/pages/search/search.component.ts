@@ -42,7 +42,6 @@ export class SearchComponent {
       .subscribe(
         (products: Product[]) => {
           this.loading = false;
-          console.log(this.category);
           this.products = products;
           this.cd.detectChanges();
         },

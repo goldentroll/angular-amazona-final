@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
 // Material
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
@@ -27,6 +28,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 // Other Packages
 import { NgxPayPalModule } from 'ngx-paypal';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { SwiperModule } from 'swiper/angular';
 
 // pages
 import { AppRoutingModule } from './app-routing.module';
@@ -100,6 +102,7 @@ import { AdminUserEditComponent } from './pages/admin-user-edit/admin-user-edit.
     FlexLayoutModule,
     NgxPayPalModule,
     MatSidenavModule,
+    SwiperModule,
   ],
   providers: [
     {

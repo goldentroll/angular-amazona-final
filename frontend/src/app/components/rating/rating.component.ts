@@ -20,7 +20,6 @@ export class RatingComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    console.log(this.rating);
     if (this.rating > 4.5) {
       this.ratings = ['star', 'star', 'star', 'star', 'star'];
     } else if (this.rating > 4) {

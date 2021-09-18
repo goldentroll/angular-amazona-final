@@ -51,7 +51,6 @@ export class ChooseLocationComponent implements OnInit {
             },
             (err) => {
               this.loading = false;
-              console.log(err);
               this.snackBar.open(err, '', { panelClass: 'error-snackbar' });
             }
           );

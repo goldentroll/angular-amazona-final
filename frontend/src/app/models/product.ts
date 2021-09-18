@@ -17,8 +17,3 @@ export interface ProductFilter {
   category: string;
   name: string;
 }
-export interface Review {
-  rating: string;
-  comment: string;
-  name: string;
-}

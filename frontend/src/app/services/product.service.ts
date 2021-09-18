@@ -27,6 +27,20 @@ export class ProductService {
     });
   }
 
+  createReview(
+    productId: string,
+    comment: string,
+    rating: number
+  ): Observable<any> {
+    return this.http.post(
+      `${environment.apiUrl}/api/products/${productId}/reviews`,
+      { comment, rating },
+      {
+        responseType: 'json',
+      }
+    );
+  }
+
   deleteProduct(productId: string): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/api/products/${productId}`, {
       responseType: 'json',

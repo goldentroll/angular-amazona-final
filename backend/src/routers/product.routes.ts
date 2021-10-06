@@ -103,8 +103,8 @@ productRouter.get(
 productRouter.get(
   '/seed',
   asyncHandler(async (req: Request, res: Response) => {
-    await UserModel.remove();
-    await ProductModel.remove();
+    // await UserModel.remove();
+    // await ProductModel.remove();
     const createdUsers = await UserModel.insertMany(users);
     const createdProducts = await ProductModel.insertMany(products);
     res.send({ createdUsers, createdProducts });
@@ -216,11 +216,11 @@ productRouter.post(
         comment: req.body.comment,
       };
       product.reviews.push(review);
-      // product.numReviews = product.reviews.length;
-      // product.rating =
-      //   product.reviews.reduce((a, c) => c.rating + a, 0) /
-      //   product.reviews.length;
-      // console.log(product.reviews);
+      product.numReviews = product.reviews.length;
+      product.rating =
+        product.reviews.reduce((a, c) => c.rating + a, 0) /
+        product.reviews.length;
+      console.log(product.reviews);
       const updatedProduct = await product.save();
       res.status(201).send({
         message: 'Review Created',

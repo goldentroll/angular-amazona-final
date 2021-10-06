@@ -60,9 +60,12 @@ export class AdminDashboardComponent implements OnInit {
     this.loading = true;
     this.orderService.getOrderSummary().subscribe(
       (summary) => {
-        this.numUsers = summary.users[0].numUsers;
-        this.totalSales = summary.orders[0].totalSales;
-        this.numOrders = summary.orders[0].numOrders;
+        this.numUsers =
+          summary.users.length > 0 ? summary.users[0].numUsers : 0;
+        this.totalSales =
+          summary.orders.length > 0 ? summary.orders[0].totalSales : 0;
+        this.numOrders =
+          summary.orders.length > 0 ? summary.orders[0].numOrders : 0;
         this.barChartLabels = summary.dailyOrders.map((x: any) => x._id);
         this.barChartData = [
           {

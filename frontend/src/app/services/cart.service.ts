@@ -3,9 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Cart, Item, ShippingAddress } from '../models/cart';
-import { round2 } from '../utils';
 import { Product } from '../models/product';
 import { environment } from '../../environments/environment';
+
+export const round2 = (num: number) =>
+  Math.round(num * 100 + Number.EPSILON) / 100;
 
 const defaultCart: Cart = {
   items: [],

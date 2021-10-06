@@ -1,46 +1,24 @@
-import express from 'express';
-import expressAsyncHandler from 'express-async-handler';
+import express, { Request, Response } from 'express';
+import asyncHandler from 'express-async-handler';
+import { User, UserModel } from '../models/user.model';
 import bcrypt from 'bcryptjs';
-import data from '../data.js';
-import User from '../models/userModel.js';
-import { generateToken, isAdmin, isAuth } from '../utils.js';
+import { generateToken, isAdmin, isAuth } from '../utils';
 
-const userRouter = express.Router();
-
-userRouter.get(
-  '/top-sellers',
-  expressAsyncHandler(async (req, res) => {
-    const topSellers = await User.find({ isSeller: true })
-      .sort({ 'seller.rating': -1 })
-      .limit(3);
-    res.send(topSellers);
-  })
-);
-
-userRouter.get(
-  '/seed',
-  expressAsyncHandler(async (req, res) => {
-    // await User.remove({});
-    const createdUsers = await User.insertMany(data.users);
-    res.send({ createdUsers });
-  })
-);
+export const userRouter = express.Router();
 
 userRouter.post(
   '/login',
-  expressAsyncHandler(async (req, res) => {
-    const user = await User.findOne({ email: req.body.email });
+  asyncHandler(async (req: Request, res: Response) => {
+    const user = await UserModel.findOne({ email: req.body.email });
     if (user) {
       if (bcrypt.compareSync(req.body.password, user.password)) {
-        res.send({
+        return res.send({
           _id: user._id,
           name: user.name,
           email: user.email,
           isAdmin: user.isAdmin,
-          isSeller: user.isSeller,
           token: generateToken(user),
         });
-        return;
       }
     }
     res.status(401).send({ message: 'Invalid email or password' });
@@ -49,28 +27,27 @@ userRouter.post(
 
 userRouter.post(
   '/register',
-  expressAsyncHandler(async (req, res) => {
-    const user = new User({
+  asyncHandler(async (req: Request, res: Response) => {
+    const user = await UserModel.create({
       name: req.body.name,
       email: req.body.email,
-      password: bcrypt.hashSync(req.body.password, 8),
-    });
-    const createdUser = await user.save();
+      password: bcrypt.hashSync(req.body.password),
+    } as User);
+
     res.send({
-      _id: createdUser._id,
-      name: createdUser.name,
-      email: createdUser.email,
-      isAdmin: createdUser.isAdmin,
-      isSeller: user.isSeller,
-      token: generateToken(createdUser),
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: generateToken(user),
     });
   })
 );
 
 userRouter.get(
   '/:id',
-  expressAsyncHandler(async (req, res) => {
-    const user = await User.findById(req.params.id);
+  asyncHandler(async (req: Request, res: Response) => {
+    const user = await UserModel.findById(req.params.id);
     if (user) {
       res.send(user);
     } else {
@@ -81,17 +58,12 @@ userRouter.get(
 userRouter.put(
   '/update-profile',
   isAuth,
-  expressAsyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id);
+  asyncHandler(async (req: Request, res: Response) => {
+    const user = await UserModel.findById(req.user._id);
     if (user) {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
-      if (user.isSeller) {
-        user.seller.name = req.body.sellerName || user.seller.name;
-        user.seller.logo = req.body.sellerLogo || user.seller.logo;
-        user.seller.description =
-          req.body.sellerDescription || user.seller.description;
-      }
+
       if (req.body.password) {
         user.password = bcrypt.hashSync(req.body.password, 8);
       }
@@ -101,7 +73,6 @@ userRouter.put(
         name: updatedUser.name,
         email: updatedUser.email,
         isAdmin: updatedUser.isAdmin,
-        isSeller: user.isSeller,
         token: generateToken(updatedUser),
       });
     }
@@ -112,8 +83,8 @@ userRouter.get(
   '/',
   isAuth,
   isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const users = await User.find({});
+  asyncHandler(async (req: Request, res: Response) => {
+    const users = await UserModel.find({});
     res.send(users);
   })
 );
@@ -122,8 +93,8 @@ userRouter.delete(
   '/:id',
   isAuth,
   isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const user = await User.findById(req.params.id);
+  asyncHandler(async (req: Request, res: Response) => {
+    const user = await UserModel.findById(req.params.id);
     if (user) {
       if (user.email === 'admin@example.com') {
         res.status(400).send({ message: 'Can Not Delete Admin User' });
@@ -141,12 +112,11 @@ userRouter.put(
   '/:id',
   isAuth,
   isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const user = await User.findById(req.params.id);
+  asyncHandler(async (req: Request, res: Response) => {
+    const user = await UserModel.findById(req.params.id);
     if (user) {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
-      user.isSeller = Boolean(req.body.isSeller);
       user.isAdmin = Boolean(req.body.isAdmin);
       // user.isAdmin = req.body.isAdmin || user.isAdmin;
       const updatedUser = await user.save();
@@ -156,5 +126,3 @@ userRouter.put(
     }
   })
 );
-
-export default userRouter;

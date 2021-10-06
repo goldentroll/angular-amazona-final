@@ -1,19 +1,18 @@
-import express from 'express';
-import expressAsyncHandler from 'express-async-handler';
-import data from '../data.js';
-import Product from '../models/productModel.js';
-import User from '../models/userModel.js';
-import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
+import express, { Request, Response } from 'express';
+import asyncHandler from 'express-async-handler';
+import { User, UserModel } from '../models/user.model';
+import { isAdmin, isAuth } from '../utils';
+import { Product, ProductModel } from '../models/product.model';
+import { products, users } from '../sample-data';
 
-const productRouter = express.Router();
+export const productRouter = express.Router();
 
 productRouter.get(
   '/',
-  expressAsyncHandler(async (req, res) => {
-    const name = req.query.name || '';
-    const category = req.query.category || '';
-    const seller = req.query.seller || '';
-    const order = req.query.order || '';
+  asyncHandler(async (req: Request, res: Response) => {
+    const name = (req.query.name || '') as string;
+    const category = (req.query.category || '') as string;
+    const order = (req.query.order || '') as string;
     const min =
       req.query.min && Number(req.query.min) !== 0 ? Number(req.query.min) : 0;
     const max =
@@ -24,7 +23,6 @@ productRouter.get(
         : 0;
 
     const nameFilter = name ? { name: { $regex: name, $options: 'i' } } : {};
-    const sellerFilter = seller ? { seller } : {};
     const categoryFilter = category ? { category } : {};
     const priceFilter = min && max ? { price: { $gte: min, $lte: max } } : {};
     const ratingFilter = rating ? { rating: { $gte: rating } } : {};
@@ -36,28 +34,24 @@ productRouter.get(
         : order === 'toprated'
         ? { rating: -1 }
         : { _id: -1 };
-    const products = await Product.find({
-      ...sellerFilter,
+    const products = await ProductModel.find({
       ...nameFilter,
       ...categoryFilter,
       ...priceFilter,
       ...ratingFilter,
-    })
-      .populate('seller', 'seller.name seller.logo')
-      .sort(sortOrder);
+    }).sort(sortOrder);
     res.send(products);
   })
 );
 
 productRouter.get(
   '/paged',
-  expressAsyncHandler(async (req, res) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const pageSize = 3;
     const page = Number(req.query.pageNumber) || 1;
-    const name = req.query.name || '';
-    const category = req.query.category || '';
-    const seller = req.query.seller || '';
-    const order = req.query.order || '';
+    const name = (req.query.name || '') as string;
+    const category = (req.query.category || '') as string;
+    const order = (req.query.order || '') as string;
     const min =
       req.query.min && Number(req.query.min) !== 0 ? Number(req.query.min) : 0;
     const max =
@@ -68,7 +62,6 @@ productRouter.get(
         : 0;
 
     const nameFilter = name ? { name: { $regex: name, $options: 'i' } } : {};
-    const sellerFilter = seller ? { seller } : {};
     const categoryFilter = category ? { category } : {};
     const priceFilter = min && max ? { price: { $gte: min, $lte: max } } : {};
     const ratingFilter = rating ? { rating: { $gte: rating } } : {};
@@ -80,21 +73,18 @@ productRouter.get(
         : order === 'toprated'
         ? { rating: -1 }
         : { _id: -1 };
-    const count = await Product.count({
-      ...sellerFilter,
+    const count = await ProductModel.count({
       ...nameFilter,
       ...categoryFilter,
       ...priceFilter,
       ...ratingFilter,
     });
-    const products = await Product.find({
-      ...sellerFilter,
+    const products = await ProductModel.find({
       ...nameFilter,
       ...categoryFilter,
       ...priceFilter,
       ...ratingFilter,
     })
-      .populate('seller', 'seller.name seller.logo')
       .sort(sortOrder)
       .skip(pageSize * (page - 1))
       .limit(pageSize);
@@ -104,39 +94,29 @@ productRouter.get(
 
 productRouter.get(
   '/categories',
-  expressAsyncHandler(async (req, res) => {
-    const categories = await Product.find().distinct('category');
+  asyncHandler(async (req: Request, res: Response) => {
+    const categories = await ProductModel.find().distinct('category');
     res.send(categories);
   })
 );
 
 productRouter.get(
   '/seed',
-  expressAsyncHandler(async (req, res) => {
-    // await Product.remove({});
-    const seller = await User.findOne({ isSeller: true });
-    if (seller) {
-      const products = data.products.map((product) => ({
-        ...product,
-        seller: seller._id,
-      }));
-      const createdProducts = await Product.insertMany(products);
-      res.send({ createdProducts });
-    } else {
-      res
-        .status(500)
-        .send({ message: 'No seller found. first run /api/users/seed' });
-    }
+  asyncHandler(async (req: Request, res: Response) => {
+    await UserModel.remove();
+    await ProductModel.remove();
+    const createdUsers = await UserModel.insertMany(users);
+    const createdProducts = await ProductModel.insertMany(products);
+    res.send({ createdUsers, createdProducts });
   })
 );
 
 productRouter.get(
   '/slug/:slug',
-  expressAsyncHandler(async (req, res) => {
-    const product = await Product.findOne({ slug: req.params.slug }).populate(
-      'seller',
-      'seller.name seller.logo seller.rating seller.numReviews'
-    );
+  asyncHandler(async (req: Request, res: Response) => {
+    const product = await ProductModel.findOne({
+      slug: req.params.slug,
+    });
     if (product) {
       res.send(product);
     } else {
@@ -147,11 +127,8 @@ productRouter.get(
 
 productRouter.get(
   '/:id',
-  expressAsyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id).populate(
-      'seller',
-      'seller.name seller.logo seller.rating seller.numReviews'
-    );
+  asyncHandler(async (req: Request, res: Response) => {
+    const product = await ProductModel.findById(req.params.id);
     if (product) {
       res.send(product);
     } else {
@@ -163,12 +140,11 @@ productRouter.get(
 productRouter.post(
   '/',
   isAuth,
-  isSellerOrAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const product = new Product({
+  isAdmin,
+  asyncHandler(async (req: Request, res: Response) => {
+    const product = await ProductModel.create({
       name: 'sample name ' + Date.now(),
-      seller: req.user._id,
-      image: '/images/p1.jpg',
+      image: '../assets/images/p1.jpg',
       price: 0,
       slug: 'sample-slug-' + Date.now(),
       category: 'sample category',
@@ -177,7 +153,8 @@ productRouter.post(
       rating: 0,
       numReviews: 0,
       description: 'sample description',
-    });
+    } as Product);
+
     const createdProduct = await product.save();
     res.send(createdProduct);
   })
@@ -185,10 +162,10 @@ productRouter.post(
 productRouter.put(
   '/:id',
   isAuth,
-  isSellerOrAdmin,
-  expressAsyncHandler(async (req, res) => {
+  isAdmin,
+  asyncHandler(async (req: Request, res: Response) => {
     const productId = req.params.id;
-    const product = await Product.findById(productId);
+    const product = await ProductModel.findById(productId);
     if (product) {
       product.name = req.body.name;
       product.slug = req.body.slug;
@@ -210,8 +187,8 @@ productRouter.delete(
   '/:id',
   isAuth,
   isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id);
+  asyncHandler(async (req: Request, res: Response) => {
+    const product = await ProductModel.findById(req.params.id);
     if (product) {
       const deleteProduct = await product.remove();
       res.send({ message: 'Product Deleted', product: deleteProduct });
@@ -224,9 +201,9 @@ productRouter.delete(
 productRouter.post(
   '/:id/reviews',
   isAuth,
-  expressAsyncHandler(async (req, res) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const productId = req.params.id;
-    const product = await Product.findById(productId);
+    const product = await ProductModel.findById(productId);
     if (product) {
       if (product.reviews.find((x) => x.name === req.user.name)) {
         return res
@@ -239,10 +216,11 @@ productRouter.post(
         comment: req.body.comment,
       };
       product.reviews.push(review);
-      product.numReviews = product.reviews.length;
-      product.rating =
-        product.reviews.reduce((a, c) => c.rating + a, 0) /
-        product.reviews.length;
+      // product.numReviews = product.reviews.length;
+      // product.rating =
+      //   product.reviews.reduce((a, c) => c.rating + a, 0) /
+      //   product.reviews.length;
+      // console.log(product.reviews);
       const updatedProduct = await product.save();
       res.status(201).send({
         message: 'Review Created',
@@ -253,5 +231,3 @@ productRouter.post(
     }
   })
 );
-
-export default productRouter;

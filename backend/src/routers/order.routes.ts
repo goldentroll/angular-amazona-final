@@ -1,29 +1,18 @@
-import express from 'express';
-import expressAsyncHandler from 'express-async-handler';
-import Order from '../models/orderModel.js';
-import User from '../models/userModel.js';
-import Product from '../models/productModel.js';
-import {
-  isAdmin,
-  isAuth,
-  isSellerOrAdmin,
-  mailgun,
-  payOrderEmailTemplate,
-} from '../utils.js';
+import express, { Request, Response } from 'express';
+import asyncHandler from 'express-async-handler';
+import { User, UserModel } from '../models/user.model';
+import { isAdmin, isAuth } from '../utils';
+import { OrderModel } from '../models/order.model';
+import { ProductModel } from '../models/product.model';
 
-const orderRouter = express.Router();
+export const orderRouter = express.Router();
+
 orderRouter.get(
   '/',
   isAuth,
-  isSellerOrAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const seller = req.query.seller || '';
-    const sellerFilter = seller ? { seller } : {};
-
-    const orders = await Order.find({ ...sellerFilter }).populate(
-      'user',
-      'name'
-    );
+  isAdmin,
+  asyncHandler(async (req: Request, res: Response) => {
+    const orders = await OrderModel.find().populate('user', 'name');
     res.send(orders);
   })
 );
@@ -32,8 +21,8 @@ orderRouter.get(
   '/summary',
   isAuth,
   isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const orders = await Order.aggregate([
+  asyncHandler(async (req: Request, res: Response) => {
+    const orders = await OrderModel.aggregate([
       {
         $group: {
           _id: null,
@@ -42,7 +31,7 @@ orderRouter.get(
         },
       },
     ]);
-    const users = await User.aggregate([
+    const users = await UserModel.aggregate([
       {
         $group: {
           _id: null,
@@ -50,7 +39,7 @@ orderRouter.get(
         },
       },
     ]);
-    const dailyOrders = await Order.aggregate([
+    const dailyOrders = await OrderModel.aggregate([
       {
         $group: {
           _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
@@ -60,7 +49,7 @@ orderRouter.get(
       },
       { $sort: { _id: 1 } },
     ]);
-    const productCategories = await Product.aggregate([
+    const productCategories = await ProductModel.aggregate([
       {
         $group: {
           _id: '$category',
@@ -75,8 +64,8 @@ orderRouter.get(
 orderRouter.get(
   '/hisotry',
   isAuth,
-  expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find({ user: req.user._id });
+  asyncHandler(async (req: Request, res: Response) => {
+    const orders = await OrderModel.find({ user: req.user._id });
     res.send(orders);
   })
 );
@@ -84,13 +73,12 @@ orderRouter.get(
 orderRouter.post(
   '/',
   isAuth,
-  expressAsyncHandler(async (req, res) => {
+  asyncHandler(async (req: Request, res: Response) => {
     if (req.body.items.length === 0) {
       res.status(400).send({ message: 'Cart is empty' });
     } else {
-      const order = new Order({
-        // seller: req.body.orderItems[0].seller,
-        items: req.body.items.map((x) => ({ ...x, product: x._id })),
+      const createdOrder = await OrderModel.create({
+        items: req.body.items.map((x: any) => ({ ...x, product: x._id })),
         shippingAddress: req.body.shippingAddress,
         paymentMethod: req.body.paymentMethod,
         itemsPrice: req.body.itemsPrice,
@@ -99,7 +87,6 @@ orderRouter.post(
         totalPrice: req.body.totalPrice,
         user: req.user._id,
       });
-      const createdOrder = await order.save();
       res.status(201).send(createdOrder);
     }
   })
@@ -108,8 +95,8 @@ orderRouter.post(
 orderRouter.get(
   '/:id',
   isAuth,
-  expressAsyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id);
+  asyncHandler(async (req: Request, res: Response) => {
+    const order = await OrderModel.findById(req.params.id);
     if (order) {
       res.send(order);
     } else {
@@ -121,38 +108,20 @@ orderRouter.get(
 orderRouter.put(
   '/:id/pay',
   isAuth,
-  expressAsyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id).populate(
-      'user',
-      'email name'
-    );
+  asyncHandler(async (req: Request, res: Response) => {
+    const order = await OrderModel.findById(req.params.id).populate('user');
+
     if (order) {
       order.isPaid = true;
-      order.paidAt = Date.now();
+      order.paidAt = new Date(Date.now());
       order.paymentResult = {
-        id: req.body.id,
+        paymentId: req.body.id,
         status: req.body.status,
         update_time: req.body.update_time,
         email_address: req.body.email_address,
       };
       const updatedOrder = await order.save();
-      mailgun()
-        .messages()
-        .send(
-          {
-            from: 'Amazona <amazona@mg.yourdomain.com>',
-            to: `${order.user.name} <${order.user.email}>`,
-            subject: `New order ${order._id}`,
-            html: payOrderEmailTemplate(order),
-          },
-          (error, body) => {
-            if (error) {
-              console.log(error);
-            } else {
-              console.log(body);
-            }
-          }
-        );
+
       res.send(updatedOrder);
     } else {
       res.status(404).send({ message: 'Order Not Found' });
@@ -164,8 +133,8 @@ orderRouter.delete(
   '/:id',
   isAuth,
   isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id);
+  asyncHandler(async (req: Request, res: Response) => {
+    const order = await OrderModel.findById(req.params.id);
     if (order) {
       const deleteOrder = await order.remove();
       res.send({ message: 'Order Deleted', order: deleteOrder });
@@ -179,11 +148,12 @@ orderRouter.put(
   '/:id/deliver',
   isAuth,
   isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id);
+  asyncHandler(async (req: Request, res: Response) => {
+    const order = await OrderModel.findById(req.params.id);
     if (order) {
       order.isDelivered = true;
-      order.deliveredAt = Date.now();
+      order.deliveredAt = new Date(Date.now());
+      // order.deliveredAt = Date.now();
 
       const updatedOrder = await order.save();
       res.send({ message: 'Order Delivered', order: updatedOrder });
@@ -192,5 +162,3 @@ orderRouter.put(
     }
   })
 );
-
-export default orderRouter;

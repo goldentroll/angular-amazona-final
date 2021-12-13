@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -6,8 +6,8 @@ import { Order } from 'src/app/models/order';
 import { OrderService } from 'src/app/services/order.service';
 import { AuthService } from 'src/app/services/auth.service';
 
-import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -15,29 +15,32 @@ import { Label } from 'ng2-charts';
   styleUrls: ['./admin-dashboard.component.css'],
 })
 export class AdminDashboardComponent implements OnInit {
+  // bar
+  barChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    scales: {
+      x: {},
+      y: {
+        min: 10,
+      },
+    },
+  };
+  barChartType: ChartType = 'bar';
+  barChartData!: ChartData<'bar'>;
+
+  // pie
+  pieChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+  };
+  pieChartType: ChartType = 'pie';
+  public pieChartData!: ChartData<'pie', number[], string | string[]>;
+
   loading = true;
   error = false;
   numUsers = 0;
   totalSales = 0;
   numOrders = 0;
   orderService: OrderService;
-  // bar chart
-  barChartOptions: ChartOptions = {
-    responsive: true,
-    scales: { xAxes: [{}], yAxes: [{}] },
-  };
-  barChartLabels: Label[] = [];
-  barChartData: ChartDataSets[] = [];
-
-  //pie chart
-  pieChartOptions: ChartOptions = {
-    responsive: true,
-    legend: {
-      position: 'top',
-    },
-  };
-  pieChartLabels: Label[] = [];
-  pieChartData: number[] = [];
 
   constructor(
     private titleService: Title,
@@ -66,22 +69,30 @@ export class AdminDashboardComponent implements OnInit {
           summary.orders.length > 0 ? summary.orders[0].totalSales : 0;
         this.numOrders =
           summary.orders.length > 0 ? summary.orders[0].numOrders : 0;
-        this.barChartLabels = summary.dailyOrders.map((x: any) => x._id);
-        this.barChartData = [
-          {
-            data: summary.dailyOrders.map((x: any) => x.sales),
-            label: 'Sales',
-          },
-          {
-            data: summary.dailyOrders.map((x: any) => x.orders),
-            label: 'Orders',
-          },
-        ];
-        this.pieChartLabels = summary.productCategories.map((x: any) => x._id);
-        (this.pieChartData = summary.productCategories.map(
-          (x: any) => x.count
-        )),
-          (this.loading = false);
+
+        this.barChartData = {
+          labels: summary.dailyOrders.map((x: any) => x._id),
+          datasets: [
+            {
+              data: summary.dailyOrders.map((x: any) => x.sales),
+              label: 'Sales',
+            },
+            {
+              data: summary.dailyOrders.map((x: any) => x.orders),
+              label: 'Orders',
+            },
+          ],
+        };
+        this.pieChartData = {
+          labels: summary.productCategories.map((x: any) => x._id),
+          datasets: [
+            {
+              data: summary.productCategories.map((x: any) => x.count),
+            },
+          ],
+        };
+
+        this.loading = false;
       },
       (err) => {
         this.loading = false;

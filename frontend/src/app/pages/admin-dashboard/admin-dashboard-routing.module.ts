@@ -6,6 +6,6 @@ const routes: Routes = [{ path: '', component: AdminDashboardComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AdminDashboardRoutingModule { }
+export class AdminDashboardRoutingModule {}

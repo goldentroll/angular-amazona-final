@@ -59,11 +59,9 @@
         <div style="display: block">
           <canvas
             baseChart
-            [datasets]="barChartData"
-            [labels]="barChartLabels"
+            [data]="barChartData"
             [options]="barChartOptions"
-            [legend]="true"
-            chartType="bar"
+            [type]="barChartType"
           >
           </canvas>
         </div>
@@ -72,10 +70,8 @@
           <canvas
             baseChart
             [data]="pieChartData"
-            [labels]="pieChartLabels"
             [options]="pieChartOptions"
-            [legend]="true"
-            chartType="pie"
+            [type]="pieChartType"
           >
           </canvas>
         </div>

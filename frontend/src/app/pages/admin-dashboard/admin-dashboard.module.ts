@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChartsModule } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
@@ -15,7 +15,7 @@ import { AdminDashboardComponent } from './admin-dashboard.component';
   imports: [
     CommonModule,
     AdminDashboardRoutingModule,
-    ChartsModule,
+    NgChartsModule,
     FlexLayoutModule,
     MatListModule,
     MatCardModule,

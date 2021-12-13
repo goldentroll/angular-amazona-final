@@ -25,7 +25,10 @@ export class ChooseLocationComponent implements OnInit {
   ) {}
 
   idle() {
-    this.center = this.map.getCenter().toJSON();
+    this.center = this.map?.getCenter()?.toJSON() ?? {
+      lat: 45.5017,
+      lng: 73.5673,
+    };
   }
   confirm() {
     this.cartService.saveShippingLocation(this.center.lat, this.center.lng);
